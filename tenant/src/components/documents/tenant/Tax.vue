@@ -77,6 +77,7 @@
         </div>
         <div v-if="taxDocument.key === 'my-name'">
           <div class="fr-mb-3w">
+            <div>{{ ocrResult }}</div>
             <FileUpload
               :current-status="fileUploadStatus"
               @add-files="addFiles"
@@ -164,6 +165,7 @@ import { LoaderComponent } from "vue-loading-overlay";
 import WarningTaxDeclaration from "@/components/documents/share/WarningTaxDeclaration.vue";
 import { UtilsService } from "@/services/UtilsService";
 import SimpleRadioButtons from "df-shared/src/Button/SimpleRadioButtons.vue";
+import {OcrService} from "@/services/OcrService";
 
 extend("is", {
   ...is,
@@ -219,6 +221,8 @@ export default class Tax extends Vue {
   newFiles: File[] = [];
 
   loader?: LoaderComponent;
+
+  ocrResult = "";
 
   getTaxLocalStorageKey() {
     return "tax_" + this.user.email;
@@ -333,6 +337,7 @@ export default class Tax extends Vue {
   async addFiles(fileList: File[]) {
     this.newFiles = fileList;
     this.showLoader();
+    this.ocrResult = await OcrService.readFileContent(fileList[0]);
     if (await PdfAnalysisService.includesRejectedTaxDocuments(fileList)) {
       this.isWarningTaxSituationModalVisible = true;
       this.hideLoader();

@@ -41,6 +41,7 @@
     "pdfjs-dist": "^3.4.120",
     "puppeteer": "^19.8.0",
     "sass": "^1.44.0",
+    "tesseract.js": "^5.0.3",
     "vee-validate": "3.4.15",
     "vue": "2.7.14",
     "vue-auth-image": "^0.0.3",
